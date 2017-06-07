@@ -15,21 +15,21 @@ function HomeController(ocAppName, FeaturedProducts) {
 		},
 		Slides: [
 			{
-				Src: 'assets/images/carousel1.jpg', 
+				Src: 'assets/images/pm_carousel_img_2.png', 
 				Title: ocAppName.Watch(),
 				SubText: 'Welcome to the ' + ocAppName.Watch() + ' application',
 				ID: 0
 			},
 			{
-				Src: 'assets/images/carousel2.jpg',
+				Src: 'assets/images/pm_carousel_img_3.png',
 				Title: 'Carousel Image Two',
-				SubText: 'This is the second image',
+				SubText: 'Welcome to the ' + ocAppName.Watch() + ' application',
 				ID: 1
 			},
 			{
-				Src: 'assets/images/carousel3.jpg',
+				Src: 'assets/images/pm_carousel_img_4.png',
 				Title: 'Carousel Image Three',
-				SubText: 'This is the third image',
+				SubText: 'Welcome to the ' + ocAppName.Watch() + ' application',
 				ID: 2
 			}
 		]
