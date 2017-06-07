@@ -1,11 +1,11 @@
 {
-  "appname": "Angular Buyer",
-  "clientid": "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX",
+  "appname": "Paul Mitchell",
+  "clientid": "16B72C4B-DD9D-4461-93D3-5BAEE3755DD3",
   "anonymous": false,
   "environment": "prod",
   "defaultstate": "home",
   "html5mode": true,
-  "bootswatchtheme": null,
+  "bootswatchtheme": "cosmo",
   "scope": [
       "BuyerReader", 
       "MeAdmin", 
