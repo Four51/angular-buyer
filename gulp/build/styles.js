@@ -5,15 +5,14 @@ var gulp = require('gulp'),
     autoprefixer = require('gulp-autoprefixer'),
     lessImport = require('gulp-less-import'),
     sourcemaps = require('gulp-sourcemaps'),
-    filter = require('gulp-filter'),
-    concat = require('gulp-concat'),
+    concatCss = require('gulp-concat-css'),
     mainBowerFiles = require('main-bower-files');
 
 gulp.task('clean:styles', function() {
-    return del(config.build + '**/*.css');
+    return del([config.build + '**/*.css', config.compile + '**/*.css']);
 });
 
-gulp.task('styles', ['clean:styles'], StylesFunction);
+gulp.task('styles', ['clean:styles'], config.saas.styles ? config.saas.styles.libLess : StylesFunction);
 
 function StylesFunction() {
     var browserSync = require('browser-sync').get('oc-server');
@@ -22,6 +21,26 @@ function StylesFunction() {
             mainBowerFiles({
                 filter: '**/*.less',
                 overrides: {
+                    'jasny-bootstrap': {
+                        main: [
+                            './dist/js/jasny-bootstrap.js',
+                            './less/jasny-bootstrap.less'
+                        ]
+                    },
+                    'slick-carousel': {
+                        main: [
+                            'slick/slick.js',
+                            'slick/slick.less',
+                            'slick/slick-theme.less'
+                        ]
+                    },
+                    'slick-carousel': {
+                        main: [
+                            "slick/slick.js",
+                            "slick/slick.less",
+                            "slick/slick-theme.less"
+                        ]
+                    },
                     'bootswatch': config.checkBootswatchTheme()
                 }}),
             './src/app/styles/main.less'
@@ -30,7 +49,7 @@ function StylesFunction() {
         .pipe(lessImport('oc-import.less'))
         .pipe(less())
         .pipe(autoprefixer(config.autoprefixerSettings))
-        .pipe(concat('app.css'))
+        .pipe(concatCss('app.css', {rebaseUrls:false}))
         .pipe(sourcemaps.write('../maps'))
         .pipe(gulp.dest(config.build + config.appCss))
         .pipe(browserSync.stream());

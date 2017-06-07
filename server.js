@@ -2,9 +2,16 @@
 var config = require('./gulp.config');
 
 var express = require('express'),
+    cookieParser = require('cookie-parser'),
     env = process.env.NODE_ENV = process.env.NODE_ENV || 'dev',
     app = express(),
     port = process.env.PORT || 451;
+
+if (config.saas.getAppConfig) {
+    app.use(cookieParser());
+    app.use(config.saas.getAppConfig());
+    app.use('/assets/styles', config.saas.styles.serverLess());
+}
 
 switch(env) {
     case 'production':
@@ -20,6 +27,8 @@ switch(env) {
         app.use('/bower_files', express.static(config.root + config.bowerFiles.replace('.', '')));
         // Host unminfied javascript files
         app.use(express.static(config.root + config.build.replace('.', '')));
+        // Host unchanged html files (look for saas overrides first)
+        app.use(express.static(config.root + config.src.replace('.', '') + 'app/saas/'));
         // Host unchanged html files
         app.use(express.static(config.root + config.src.replace('.', '') + 'app/'));
         app.get('/*', function(req, res) {
