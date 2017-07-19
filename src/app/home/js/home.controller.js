@@ -22,14 +22,14 @@ function HomeController(ocAppName, FeaturedProducts) {
 			},
 			{
 				URL: 'assets/images/carousel2.jpg',
-				Title: 'Carousel Image Two',
-				SubText: 'This is the second image',
+				Title: ocAppName.Watch(),
+				SubText: 'Welcome to the ' + ocAppName.Watch() + ' application',
 				ID: 1
 			},
 			{
 				URL: 'assets/images/carousel3.jpg',
-				Title: 'Carousel Image Three',
-				SubText: 'This is the third image',
+				Title: ocAppName.Watch(),
+				SubText: 'Welcome to the ' + ocAppName.Watch() + ' application',
 				ID: 2
 			}
 		]
