@@ -1,4 +1,5 @@
 var source = './src/',
+    moduleName = 'orderCloud',
     assets = 'assets/',
     build = './build/',
     bowerFiles = './bower_components/',
@@ -9,7 +10,15 @@ var source = './src/',
     gulp_dir = './gulp/',
     fs = require('fs');
 
+try {
+    var saasConfig = require(source + 'app/saas/gulp.config');
+} catch(ex) {
+    var saasConfig = {};
+}
+
 module.exports = {
+    moduleName: moduleName,
+    saas: saasConfig,
     bowerFiles: bowerFiles,
     npmFiles: npmFiles,
     src: source,
@@ -24,7 +33,8 @@ module.exports = {
     index: source + index,
     styles: [
         source + '**/*.css',
-        source + '**/*.less'
+        source + '**/*.less',
+        '!' + source + '**/saas/theme/*.less'
     ],
     templates: [
         '!' + source + index,
@@ -32,13 +42,24 @@ module.exports = {
     ],
     scripts: [
         source + 'app/**/*.js',
+        '!' + source + '**/saas/gulp.config.js',
+        '!' + source + '**/saas/app.constants.json',
+        '!' + source + '**/saas/documentDB/config.js',
+        '!' + source + '**/saas/documentDB/getConfiguration.js',
         '!' + source + '**/*.spec.js',
         '!' + source + '**/*.test.js'
     ],
     appFiles: [
+        build + '**/saas.module.js',
+        build + '**/saas/**/*.js',
+        build + '**/saas/oc-constants/oc-constants.js',
+        '!' + build + '**/saas/gulp.config.js',
+        '!' + build + '**/saas/app.constants.json',
+        '!' + build + '**/saas/documentDB/config.js',
+        '!' + build + '**/saas/documentDB/getConfiguration.js',
         build + '**/app.module.js',
-        build + '**/common/config/routing.js',
-        build + '**/common/config/*.js',
+        build + '**/common/config/routing/routing.js',
+        build + '**/common/config/**/*.js',
         build + '**/*s.config.js',
         build + '**/*.config.js',
         build + '**/app.run.js',
@@ -59,7 +80,7 @@ module.exports = {
     ngConstantSettings: {
         name: 'orderCloud',
         deps: false,
-        constants: getConstants()
+        constants: saasConfig.getConstants ? saasConfig.getConstants() : getConstants()
     },
     autoprefixerSettings: {
         browsers: ['last 2 versions'],
@@ -74,7 +95,8 @@ function getConstants() {
     var result = {};
     var constants = JSON.parse(fs.readFileSync(source + 'app/app.constants.json'));
     var environment = process.env.environment || constants.environment;
-    switch (environment) {
+    var node_env = process.env.NODE_ENV || 'development';
+     switch (environment) {
         case 'local':
             result.authurl = 'http://core.four51.com:11629';
             result.apiurl = 'http://core.four51.com:9002';
@@ -83,11 +105,6 @@ function getConstants() {
         case 'qa':
             result.authurl = 'https://qaauth.ordercloud.io';
             result.apiurl = 'https://qaapi.ordercloud.io';
-            result.rebateCode = 'OnePercentRebate';
-            break;
-        case 'staging':
-            result.authurl = 'https://stagingauth.ordercloud.io';
-            result.apiurl = 'https://stagingapi.ordercloud.io';
             result.rebateCode = 'OnePercentRebate';
             break;
         default:
@@ -107,12 +124,18 @@ function getConstants() {
     result.devapiurl = "http://localhost:7203/api";
     if(process.env.devapiurl) result.devapiurl = process.env.devapiurl;
     if (process.env.clientid) result.clientid = process.env.clientid;
+    if (process.env.anonymous) result.anonymous = process.env.anonymous;
     if (process.env.appname) result.appname = process.env.appname;
     if (process.env.scope) result.scope = process.env.scope;
     if (process.env.ocscope) result.ocscope = process.env.ocscope;
     if (process.env.html5mode) result.html5mode = process.env.html5mode;
     if (process.env.bootswatchtheme) result.bootswatchtheme = process.env.bootswatchtheme;
-    if (process.env.catalogid) result.catalogid = process.env.catalogid;
+    if (process.env.awsaccesskeyid) result.awsaccesskeyid = process.env.awsaccesskeyid;
+    if (process.env.awssecretaccesskey) result.awssecretaccesskey = process.env.awssecretaccesskey;
+    if (process.env.awsregion) result.awsregion = process.env.awsregion;
+    if (process.env.awsbucket) result.awsbucket = process.env.awsbucket;
+    result.node_env = node_env;
+    result.environment = environment;
     return result;
 }
 
@@ -124,9 +147,9 @@ function _checkBootswatchTheme() {
 
     if (theme) {
         bootswatchBower.main = [
-            "./" + theme + "/bootswatch.less",
-            "./" + theme + "/variables.less"
-        ]
+            './' + theme + '/bootswatch.less',
+            './' + theme + '/variables.less'
+        ];
     }
 
     return bootswatchBower;

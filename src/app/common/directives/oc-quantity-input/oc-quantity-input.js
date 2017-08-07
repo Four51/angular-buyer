@@ -1,47 +1,54 @@
 angular.module('orderCloud')
-    .directive('ocQuantityInput', OCQuantityInput)
+    .directive('ocQuantityInput', OCQuantityInput);
 
-;
-
-function OCQuantityInput(toastr, OrderCloudSDK, $rootScope) {
+function OCQuantityInput($log, $state, toastr, OrderCloudSDK) {
     return {
         scope: {
             product: '=',
             lineitem: '=',
             label: '@',
             order: '=',
-            onUpdate: '&'
+            onUpdate: '&',
+            size: '@'
         },
+        require: '^?ocPrettySubmit',
         templateUrl: 'common/directives/oc-quantity-input/oc-quantity-input.html',
         replace: true,
-        link: function (scope) {
-            if (scope.product){
+        link: function (scope, element, attrs, formCtrl) {
+            if (scope.size && ['sm', 'lg'].indexOf(scope.size) > -1) scope.sizeClass = 'input-' + scope.size; 
+            if (scope.product) {
                 scope.item = scope.product;
-                scope.content = "product";
-                if(!scope.item.Quantity ){scope.item.Quantity = scope.product.PriceSchedule.PriceBreaks[0].Quantity;}
-
-            }
-            else if(scope.lineitem){
+                scope.item.Quantity = (scope.item.PriceSchedule && scope.item.PriceSchedule.MinQuantity)
+                     ? scope.item.PriceSchedule.MinQuantity
+                     : 1;
+                if (formCtrl && formCtrl.setDirty) formCtrl.setDirty();
+                scope.content = 'product';
+            } else if (scope.lineitem) {
+                var add, subtract;
+                var lineItem = angular.copy(scope.lineitem);
                 scope.item = scope.lineitem;
-                scope.content = "lineitem";
-                scope.updateQuantity = function() {
+                scope.content = 'lineitem';
+                scope.updateQuantity = function () {
                     if (scope.item.Quantity > 0) {
-                        OrderCloudSDK.LineItems.Patch('outgoing', scope.order.ID, scope.item.ID, {Quantity: scope.item.Quantity})
+                        OrderCloudSDK.LineItems.Patch('outgoing', scope.order.ID, scope.item.ID, {
+                                Quantity: scope.item.Quantity
+                            })
                             .then(function (data) {
                                 data.Product = scope.lineitem.Product;
                                 scope.item = data;
                                 scope.lineitem = data;
-                                if (typeof scope.onUpdate === "function") scope.onUpdate({li: scope.lineitem});
-                                toastr.success('Quantity Updated');
-                                $rootScope.$broadcast('OC:UpdateOrder', scope.order.ID, 'Calculating Order Total');
+                                if (typeof scope.onUpdate === 'function') scope.onUpdate(scope.lineitem);
+                                toastr.success(data.Product.Name + ' quantity updated to ' + data.Quantity);
+
+                                lineItem.Quantity > data.Quantity ? subtract = true : add = true;
+                                scope.$emit('OC:UpdateOrder', scope.order.ID, {lineItems: lineItem, add: add, subtract: subtract});
+                                $state.go('cart', {}, {reload: true});
                             });
                     }
-                }
-            }
-            else{
-                toastr.error('Please input either a product or lineitem attribute in the directive','Error');
-                console.error('Please input either a product or lineitem attribute in the quantityInput directive ')
+                };
+            } else {
+                $log.error('oc-quantity-input error: ocQuantityInput requires either a product or lineitem attribute in order to work properly.');
             }
         }
-    }
+    };
 }

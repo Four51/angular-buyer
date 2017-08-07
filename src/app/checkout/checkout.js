@@ -89,25 +89,29 @@ ocMandrill, Buyer) {
     vm.buyer = Buyer;
 
     vm.submitOrder = function(order) {
-        vm.orderLoading = OrderCloudSDK.Payments.List('outgoing', order.ID, {filters: {Type: 'SpendingAccount'}})
-            .then(function(paymentList){
-                var payment = paymentList.Items[0];
-                if(payment && payment.SpendingAccountID){
-                    return OrderCloudSDK.Me.GetSpendingAccount(payment.SpendingAccountID)
-                        .then(function(budget){
-                            if( budget && budget.Balance < 0){
-                                //send email alerting negative balance
-                                order.BudgetBalance = budget.Balance;
-                                order.BugetBalanceName = budget.Name;
-                                return submitAndAlert(order);
-                            } else {
-                                return finalSubmit(order);
-                            }
-                        });
-                } else {
-                    return finalSubmit(order);
-                }
-            });
+        return finalSubmit(order);
+
+        // we don't want to send email on demo
+
+        // vm.orderLoading = OrderCloudSDK.Payments.List('outgoing', order.ID, {filters: {Type: 'SpendingAccount'}})
+        //     .then(function(paymentList){
+        //         var payment = paymentList.Items[0];
+        //         if(payment && payment.SpendingAccountID){
+        //             return OrderCloudSDK.Me.GetSpendingAccount(payment.SpendingAccountID)
+        //                 .then(function(budget){
+        //                     if( budget && budget.Balance < 0){
+        //                         //send email alerting negative balance
+        //                         order.BudgetBalance = budget.Balance;
+        //                         order.BugetBalanceName = budget.Name;
+        //                         return submitAndAlert(order);
+        //                     } else {
+        //                         return finalSubmit(order);
+        //                     }
+        //                 });
+        //         } else {
+        //             return finalSubmit(order);
+        //         }
+        //     });
     };
 
     function submitAndAlert(order){
