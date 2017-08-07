@@ -1,6 +1,6 @@
 <!--Navmenu is used on smaller viewports-->
  <nav class="navmenu navmenu-default navmenu-fixed-left offcanvas navmenu--mobile">
-    <!-- <a class="navmenu-brand" ui-sref="home">{{application.name()}}</a> -->
+      <a class="navmenu-brand" ui-sref="home">{{application.name}}</a>  
     <ul class="nav navmenu-nav">
         <li>
             <a ui-sref="productBrowse.products({page:'', favorites:'', sortBy:'', categoryid:''})">Product Browse</a>
@@ -50,10 +50,10 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <!-- <a class="navbar-brand" ui-sref="home" ng-if="!application.logoUrl">{{application.name()}}</a>
+                 <a class="navbar-brand" ui-sref="home" ng-if="!application.logoUrl">{{application.name}}</a>
                 <a class="c-logo-display c-logo-display__nav" ng-if="application.logoUrl" ui-sref="home">
-                    <img ng-src="{{application.logoUrl}}" alt="{{application.name()}}">
-                </a> -->
+                    <img ng-src="{{application.logoUrl}}" alt="{{application.name}}">
+                </a> 
             </div>
             <ul class="nav navbar-nav navbar-nav--desktop">
                 <li>
