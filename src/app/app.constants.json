@@ -1,7 +1,7 @@
 {
   "appname": "Beauty Sense",
   "clientid": "16B72C4B-DD9D-4461-93D3-5BAEE3755DD3",
-  "anonymous": false,
+  "anonymous": true,
   "environment": "prod",
   "defaultstate": "home",
   "html5mode": true,
