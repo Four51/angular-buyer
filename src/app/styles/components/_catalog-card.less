@@ -1,72 +1,63 @@
 .c-product-card {
-    margin-bottom: @grid-gutter-width / 2;
-    padding: 0;
-    border: none;
-    @media (min-width: @screen-sm-min) {
     // add flex display to product card wrapper
     // flex the product card to fill the grid item element
-        .oc-flex-layout.vertical;
-        .oc-flex-layout.flex-auto;
-        &__body {
-            .oc-flex-layout.vertical;
-            .oc-flex-layout.flex-auto;
-        }
-        // flex the descrip to push icons to bottom of card
-        &__descrip {
-            .oc-flex-layout.flex-auto;
-        }
+    margin-bottom: @grid-gutter-width;
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    .c-product-card__body {
+        // display: flex;
+        // flex-direction: column;
+        flex: 1 1 auto;
+        cursor: pointer;
+        padding-bottom:(@line-height-computed / 2);
     }
-}
-
-.c-product-card__img-wrap {
-    a {
-        display: block;
-    }
-}
-
-.c-product-card__img {
-    width: 100%;
-}
-
-.c-product-card__name {
-    // flex: 1;
-    flex-grow: 1;
-    flex-shrink: 1;
-    flex-basis: auto;
-    font-size: 15px;
-}
-
-.c-product-card__price {
-    font-size: 15px;
-    display: inline-block;
-    margin: 0;
-}
-
-.c-product-card__icons {
-    .fa {
-        font-size: 1.4em;
-        &:first-of-type {
-            margin-left: 7.5px;
+    .c-product-card__img-wrap {
+        position:relative;
+        .thumbnail;
+        margin-bottom: (@line-height-computed / 2);
+        img {
+            margin:0 auto;
+        }
+        // position the quickview button in the center of the image and set opacity to 0
+        .c-product-card__quickview-btn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0;
+        }
+        // set the quickview button opacity to 1 on hover
+        &:hover {
+            .c-product-card__quickview-btn {
+                opacity: 1;
+            }
         }
     }
-}
-
-.c-product-card__add-to-cart {
-    .oc-flex-layout.horizontal;
-    .c-qty-input {
-        max-width: 70px;
-        margin-right: 9px;
+    .c-product-card__name {
+        word-wrap: break-word;
     }
-    .c-product-card__add-to-cart-btn {
-        .oc-flex-layout.flex-auto;
+    .c-product-card__price {
+        margin-bottom: 0;
+        font-size:@font-size-h4;
+    }
+    .c-product-card__btn-group {
+        table-layout: auto;
+        .c-product-card__btn {
+            width: 100%;
+        }
+        .c-product-card__favorite-btn .btn {
+            border-left:none;
+        }
     }
 }
-
 
 .c-category-card {
+    .thumbnail;
     // add flex display to category card wrapper
     @media (min-width: @screen-sm-min) {
-        .oc-flex-layout.vertical;
-        .oc-flex-layout.flex-auto;   
-    }         
+        display: flex;
+        flex-direction: column;
+        flex: 1 1 auto;
+    }
 }

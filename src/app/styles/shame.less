@@ -16,13 +16,26 @@ textarea {
   margin-top:0;
 }
 
-.container-smooth {
-  margin-left:0;
+.label {
+  &[ng-repeat] {
+    margin-right:3px;
+    display:inline-block;
+  }
 }
 
-.label[ng-repeat] {
-  margin-right:3px;
-  display:inline-block;
+.fa {
+  &.success {
+    color:@brand-success;
+  }
+  &.warning {
+    color:@brand-warning;
+  }
+  &.info {
+    color:@brand-info;
+  }
+  &.danger {
+    color:@brand-danger;
+  }
 }
 
 li,
@@ -43,10 +56,33 @@ li a,
   text-align:center;
 }
 
-.c-category-card__img-wrap {
-min-height: 1%;
+// Overriding default bootstrap navbar behavior - we aren't using the default nav collapse UX
+.navbar-header,
+.navbar-nav > li {
+  float: left;
+}
+.navbar-left {
+  float: left;
+  float: left !important;
+}
+.navbar-right {
+  float: right;
+  float: right !important;
+  margin-right: -15px;
+}
+.navbar-toggle {
+  float: left;
+  margin-left: @navbar-padding-horizontal;
 }
 
-.c-product-card__img-wrap {
-min-height: 1%;
+// IE11 image height hack
+.c-product-card {
+    .c-product-card__img {
+        min-height: 1%;
+    }
+}
+.c-category-card {
+    .c-category-card__img {
+        min-height: 1%;
+    }
 }

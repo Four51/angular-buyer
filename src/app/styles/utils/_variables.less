@@ -3,74 +3,31 @@
 // from catalog/less
 @aside-tree-width: 350px;
 
-// Primary Color Cafe Rio Red
-@brand-primary: #D83827;
-@light-grey: #f5f5f5;
-@grey: #dedede;
-@dark-grey: #9a9a9b;
+// buttons
+@btn-favorite-color-default: @btn-default-color;
+@btn-favorite-color-favorited: @brand-danger;
+@btn-favorite-bg: @btn-default-bg;
+@btn-favorite-border: @btn-default-border;
 
-// Jumbotron Background Image
-.jumbotron {
-    background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-image: url(/assets/images/homepage/cafe-rio-hero.jpg); 
-    position: relative;
-    height: 100%;
-    padding-top: 0px;
-    padding-bottom: 400px;
-}
+// carousel variables & styles
+// TODO: sync up slick styles with carousel styles as much as possible
+@carousel-control-color: @brand-primary;
+@carousel-control-opacity: 0.75;
+@carousel-control-opacity-hover: 1;
+@carousel-text-shadow: none;
+@carousel-indicator-border-color: @carousel-control-color;
+@carousel-indicator-active-bg: @carousel-control-color;
 
-@media (max-width: 991px) {
-    .jumbotron {
-        padding-bottom: 300px;
-    }
-}
-
-@media (max-width: 767px) {
-    .jumbotron {
-        padding-bottom: 200px;
-    }
-}
-
-.jumbotron h1 {
-    color: #ffffff;
-    text-transform: uppercase;
-    font-size: 60px;
-    font-weight: 300;
-}
-
-// Cards for homepage
-.homepage-card {
-    border: 1px solid #ddd;
-    padding: 5px 10px;
-    height: 177px;
-}
-
-.top-buffer { 
-    margin-top:20px; 
-}
-
-.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
-    font-weight: 700;
-}
-
-.profile-img {
-  height: 120px;
-  background: white;
-}
-
-.job {
-  color: #a1a1a1;
-  font-size: 14px;
-}
-
-.mail, .phone {
-  font-size: 14px;
- }
-
-.alert-info {
-    background-color: #F2FBFF;
-    border-color: #9CE1FF;
-    color: #356E91;
-}
+// slick variables
+@slick-font-path: "nothing";
+@slick-font-family: "FontAwesome";
+@slick-loader-path: "./";
+@slick-arrow-color: @carousel-control-color;
+@slick-dot-color: black;
+@slick-dot-color-active: @slick-dot-color;
+@slick-prev-character: @fa-var-chevron-left;
+@slick-next-character: @fa-var-chevron-right;
+@slick-dot-character: @fa-var-circle;
+@slick-opacity-default: @carousel-control-opacity;
+@slick-opacity-on-hover: @carousel-control-opacity-hover;
+@slick-opacity-not-active: 0.25;
