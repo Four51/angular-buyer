@@ -1,7 +1,7 @@
 {
-  "appname": "Angular Buyer",
+  "appname": "Beauty Sense",
   "clientid": "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX",
-  "anonymous": true,
+  "anonymous": false,
   "environment": "prod",
   "defaultstate": "home",
   "html5mode": true,
