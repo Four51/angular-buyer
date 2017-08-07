@@ -1,41 +1,58 @@
 angular.module('orderCloud')
-    .component('ocProductCard', {
-        templateUrl: 'common/directives/oc-product-card/oc-product-card.html',
-        controller: ocProductCard,
-        controllerAs: 'productCard',
-        bindings: {
-            product: '<',
-            currentOrder: '=',
-            currentUser: '<',
-            lineItemsList: '<'
-        }
+    .controller('ProductCardCtrl', OrderCloudProductCardController)
+    .directive('ocProductCard', function() {
+        return {
+            templateUrl: 'common/directives/oc-product-card/oc-product-card.html',
+            controller: 'ProductCardCtrl',
+            controllerAs: 'productCard',
+            replace: true,
+            bindToController: true,
+            scope: {
+                product: '<',
+                currentOrder: '<',
+                lineitemlist: '<'
+            }
+        };
     });
 
-function ocProductCard($rootScope, $scope, $exceptionHandler, toastr, OrderCloudSDK, ocLineItems){
+function OrderCloudProductCardController($scope, $exceptionHandler, toastr, ocLineItems){
     var vm = this;
+    var toastID = 0; // This is used to circumvent the global toastr config that prevents duplicate toasts from opening.
+    
+    vm.$onInit = onInit;
+    vm.addToCart = addToCart;
+    vm.findPrice = findPrice;
 
-    $scope.$watch(function(){
-        return vm.product.Quantity;
-    }, function(newVal){
-        vm.findPrice(newVal);
-    });
+    function onInit() {
+        if (!vm.currentOrder) return;
+        if (vm.product.PriceSchedule && vm.product.PriceSchedule.PriceBreaks) {
+            $scope.$watch(function(){
+                return vm.product.Quantity;
+            }, function(newVal){
+                vm.findPrice(newVal);
+            });
+        }
+    }
 
-    vm.addToCart = function(OCProductForm) {
-        ocLineItems.AddItem(vm.currentOrder, vm.product, vm.lineItemsList)
-			.then(function(){
-				toastr.success('Product added to cart', 'Success');
-				$uibModalInstance.close();
-			});
-    };
+    function addToCart() {
+        return ocLineItems.AddItem(vm.currentOrder, vm.product)
+            .then(function() {
+                toastr.success(vm.product.Name + ' was added to your cart. <span class="hidden">' + vm.product.ID + toastID + '</span>', null, {allowHtml:true});
+                toastID++;
+            })
+            .catch(function(error){
+               $exceptionHandler(error);
+            });
+    }
 
-    vm.findPrice = function(qty){
+    function findPrice(qty){
         if(qty){
-            var finalPriceBreak;
-            angular.forEach(vm.product.PriceSchedule.PriceBreaks, function(priceBreak) {
+            var finalPriceBreak = {};
+            _.each(vm.product.PriceSchedule.PriceBreaks, function(priceBreak) {
                 if (priceBreak.Quantity <= qty)
-                    finalPriceBreak = angular.copy(priceBreak);
+                finalPriceBreak = angular.copy(priceBreak);
             });
             vm.calculatedPrice = finalPriceBreak.Price * qty;
         }
-    };
+    }
 }

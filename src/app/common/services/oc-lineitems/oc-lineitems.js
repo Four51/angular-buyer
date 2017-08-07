@@ -2,12 +2,10 @@ angular.module('orderCloud')
     .factory('ocLineItems', LineItemFactory)
 ;
 
-function LineItemFactory($rootScope, $q, $uibModal, $exceptionHandler, OrderCloudSDK) {
+function LineItemFactory($rootScope, $q, OrderCloudSDK) {
     return {
         SpecConvert: _specConvert,
         AddItem: _addItem,
-        GetProductInfo: _getProductInfo,
-        CustomShipping: _customShipping,
         UpdateShipping: _updateShipping,
         ListAll: _listAll
     };
@@ -35,89 +33,39 @@ function LineItemFactory($rootScope, $q, $uibModal, $exceptionHandler, OrderClou
         return results;
     }
 
-    function _addItem(order, product, lineItems){
+    function _addItem(order, product){
         var deferred = $q.defer();
-
-        var existingLI = _.findWhere(lineItems.Items, {ProductID: product.ID});
 
         var li = {
             ProductID: product.ID,
-            Quantity: existingLI ? product.Quantity + existingLI.Quantity : product.Quantity,
-            Specs: _specConvert(product.Specs),
-            ShippingAddressID: order.ShippingAddressID
+            Quantity: product.Quantity,
+            Specs: _specConvert(product.Specs)
         };
-        
-        if (existingLI) {
-            OrderCloudSDK.LineItems.Patch('outgoing', order.ID, existingLI.ID, li)
-                .then(function(lineItem) {
-                    updateOrder(lineItem);
-                })
-                .catch(function(ex) {
-                    $exceptionHandler(ex);
-                    deferred.reject(ex);
-                })
-        } else {
-            OrderCloudSDK.LineItems.Create('outgoing', order.ID, li)
-                .then(function(lineItem) {
-                    updateOrder(lineItem);
-                })
-                .catch(function(ex) {
-                    $exceptionHandler(ex);
-                    deferred.reject(ex);
-                })
+        li.ShippingAddressID = isSingleShipping(order) ? getSingleShippingAddressID(order) : null;
+        OrderCloudSDK.LineItems.Create('outgoing', order.ID, li)
+            .then(function(lineItem) {
+                $rootScope.$broadcast('OC:UpdateOrder', order.ID, {lineItems: lineItem, add: true});
+                deferred.resolve();
+            })
+            .catch(function(error) {
+                deferred.reject(error);
+            });
+
+        function isSingleShipping(order) {
+            return _.pluck(order.LineItems, 'ShippingAddressID').length === 1;
         }
 
-        function updateOrder(lineItem) {
-            $rootScope.$broadcast('OC:UpdateOrder', order.ID, 'Updating Order');
-            product.Quantity = 1;
-            deferred.resolve();
-        };
+        function getSingleShippingAddressID(order) {
+            return order.LineItems[0].ShippingAddressID;
+        }
 
         return deferred.promise;
     }
 
-    function _getProductInfo(LineItems) {
-        var li = LineItems.Items || LineItems;
-        var productIDs = _.uniq(_.pluck(li, 'ProductID'));
-        var dfd = $q.defer();
-        var queue = [];
-        angular.forEach(productIDs, function (productid) {
-            queue.push(OrderCloudSDK.Me.GetProduct(productid));
-        });
-        $q.all(queue)
-            .then(function (results) {
-                angular.forEach(li, function (item) {
-                    item.Product = angular.copy(_.where(results, {ID: item.ProductID})[0]);
-                });
-                dfd.resolve(li);
-            });
-        return dfd.promise;
-    }
-
-    function _customShipping(Order, LineItem) {
-        var modalInstance = $uibModal.open({
-            animation: true,
-            templateUrl: 'common/lineitems/templates/shipping.tpl.html',
-            controller: 'LineItemModalCtrl',
-            controllerAs: 'liModal',
-            size: 'lg'
-        });
-
-        modalInstance.result
-            .then(function (address) {
-                address.ID = Math.floor(Math.random() * 1000000).toString();
-                OrderCloudSDK.LineItems.SetShippingAddress('outgoing', Order.ID, LineItem.ID, address)
-                    .then(function () {
-                        $rootScope.$broadcast('LineItemAddressUpdated', LineItem.ID, address);
-                    });
-            });
-    }
-
     function _updateShipping(Order, LineItem, AddressID) {
-        OrderCloudSDK.Addresses.Get(AddressID)
+        OrderCloudSDK.Me.GetAddress(AddressID)
             .then(function (address) {
                 OrderCloudSDK.LineItems.SetShippingAddress('outgoing', Order.ID, LineItem.ID, address);
-                $rootScope.$broadcast('LineItemAddressUpdated', LineItem.ID, address);
             });
     }
 
@@ -125,14 +73,19 @@ function LineItemFactory($rootScope, $q, $uibModal, $exceptionHandler, OrderClou
         var li;
         var dfd = $q.defer();
         var queue = [];
-        OrderCloudSDK.LineItems.List('outgoing', orderID, null, 1, 100)
+        var options = {
+            page: 1,
+            pageSize: 100
+        };
+        OrderCloudSDK.LineItems.List('outgoing', orderID, options)
             .then(function (data) {
                 li = data;
                 if (data.Meta.TotalPages > data.Meta.Page) {
                     var page = data.Meta.Page;
                     while (page < data.Meta.TotalPages) {
-                        page += 1;
-                        queue.push(OrderCloudSDK.LineItems.List('outgoing', orderID, null, page, 100));
+                        page++;
+                        options.page = page;
+                        queue.push(OrderCloudSDK.LineItems.List('outgoing', orderID, options));
                     }
                 }
                 $q.all(queue)

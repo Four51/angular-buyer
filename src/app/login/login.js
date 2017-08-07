@@ -15,7 +15,7 @@ function LoginConfig($stateProvider) {
     ;
 }
 
-function LoginService($q, $window, $state, $cookies, toastr, OrderCloudSDK, ocRolesService, clientid) {
+function LoginService($q, $window, $state, $cookies, toastr, OrderCloudSDK, ocRoles, clientid) {
     return {
         SendVerificationCode: _sendVerificationCode,
         ResetPassword: _resetPassword,
@@ -56,7 +56,7 @@ function LoginService($q, $window, $state, $cookies, toastr, OrderCloudSDK, ocRo
         angular.forEach($cookies.getAll(), function(val, key) {
             $cookies.remove(key);
         });
-        ocRolesService.Remove();
+        ocRoles.Remove();
         $state.go('login', {}, {reload: true});
     }
 
@@ -79,7 +79,7 @@ function LoginService($q, $window, $state, $cookies, toastr, OrderCloudSDK, ocRo
     }
 }
 
-function LoginController($state, $stateParams, $exceptionHandler, OrderCloudSDK, LoginService, ocRolesService, clientid, scope) {
+function LoginController($state, $stateParams, $exceptionHandler, OrderCloudSDK, LoginService, ocRoles, clientid, scope) {
    var vm = this;
     vm.credentials = {
         Username: null,
@@ -96,7 +96,7 @@ function LoginController($state, $stateParams, $exceptionHandler, OrderCloudSDK,
             .then(function(data) {
                 OrderCloudSDK.SetToken(data.access_token);
                 if (vm.rememberStatus) OrderCloudSDK.SetRefreshToken(data['refresh_token']);
-                var roles = ocRolesService.Set(data.access_token);
+                var roles = ocRoles.Set(data.access_token);
                 if (roles.length === 1 && roles[0] === 'PasswordReset') {
                     vm.token = data.access_token;
                     vm.form = 'resetByToken';
