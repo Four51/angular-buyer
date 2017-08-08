@@ -56,11 +56,7 @@ function LoginService($q, $window, $state, $cookies, toastr, OrderCloudSDK, ocRo
     }
 
     function _logout() {
-        angular.forEach($cookies.getAll(), function(val, key) {
-            $cookies.remove(key);
-        });
-        ocRoles.Remove();
-        $state.go('login', {}, {reload: true});
+        return OrderCloudSDK.Auth.Logout();
     }
 
     function _rememberMe() {
