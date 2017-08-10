@@ -39,30 +39,36 @@ function HomeConfig($stateProvider) {
 	;
 }
 
-function HomeController(FeaturedProducts, FeaturedCategories) {
+function HomeController(FeaturedProducts, FeaturedCategories, ocAppName) {
 	var vm = this;
 	vm.productList = FeaturedProducts;
 	vm.categoryList = FeaturedCategories;
 
-	//settings used by slider
-	vm.responsive = [
-		{
-			breakpoint: 1500,
-			settings: {
-				slidesToShow: 4
-			}
+	vm.carousel = {
+		Settings: {
+			Interval: 5000,
+			Active: 0,
+			NoWrap: false
 		},
-		{
-			breakpoint: 992,
-			settings: {
-				slidesToShow: 3
+		Slides: [
+			{
+				URL: 'assets/images/carousel1.jpg', 
+				Title: ocAppName.Watch(),
+				SubText: 'Welcome to the ' + ocAppName.Watch() + ' application',
+				ID: 0
+			},
+			{
+				URL: 'assets/images/carousel2.jpg',
+				Title: 'Carousel Image Two',
+				SubText: 'This is the second image',
+				ID: 1
+			},
+			{
+				URL: 'assets/images/carousel3.jpg',
+				Title: 'Carousel Image Three',
+				SubText: 'This is the third image',
+				ID: 2
 			}
-		},
-		{
-			breakpoint: 768,
-			settings: {
-				slidesToShow: 1
-			}
-		}                            
-	];
+		]
+	};
 }
