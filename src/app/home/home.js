@@ -39,30 +39,36 @@ function HomeConfig($stateProvider) {
 	;
 }
 
-function HomeController(FeaturedProducts, FeaturedCategories) {
+function HomeController(FeaturedProducts, FeaturedCategories, ocAppName) {
 	var vm = this;
 	vm.productList = FeaturedProducts;
 	vm.categoryList = FeaturedCategories;
 
-	//settings used by slider
-	vm.responsive = [
-		{
-			breakpoint: 1500,
-			settings: {
-				slidesToShow: 4
-			}
+	vm.carousel = {
+		Settings: {
+			Interval: 9000,
+			Active: 0,
+			NoWrap: false
 		},
-		{
-			breakpoint: 992,
-			settings: {
-				slidesToShow: 3
+		Slides: [
+			{
+				URL: '/assets/images/carousel_1_1920x900.jpg', 
+				Title: ocAppName.Watch(),
+				SubText: 'Welcome to the ' + ocAppName.Watch() + ' application',
+				ID: 0
+			},
+			{
+				URL: '/assets/images/carousel_2_1920x900.jpg',
+				Title: 'Save $10 on your first order!',
+				SubText: 'First time customers use 10OFF at checkout',
+				ID: 1
+			},
+			{
+				URL: '/assets/images/carousel_3_1920x900.jpg',
+				Title: 'Minnesota Sourced',
+				SubText: 'Browse by products or categories online',
+				ID: 2
 			}
-		},
-		{
-			breakpoint: 768,
-			settings: {
-				slidesToShow: 1
-			}
-		}                            
-	];
+		]
+	};
 }

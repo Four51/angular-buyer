@@ -1,0 +1,104 @@
+@brand-primary:                 #FF5F32;
+@brand-secondary:               lighten(@brand-primary, 15%);
+@brand-tertiary:                lighten(@brand-primary, 30%);
+@brand-quaternary:              lighten(@brand-primary, 45%);
+@brand-success:                 #91A6FF;
+@brand-info:                    #5DD2D8;
+@brand-warning:                 #FFB47F;
+@brand-danger:                  #FF7F8A;
+
+//** Placeholder text color
+@input-color-placeholder:        @brand-tertiary;
+
+// navbar
+
+@navbar-height: 78px;
+
+.navbar-brand {
+    padding: 0 @navbar-padding-horizontal;
+    img {
+        width: 2.5em;
+        padding-top: 16px;
+        padding-bottom: 16px;
+    }
+}
+
+.c-navbar-default {
+    // padding: 1em;
+    background-image: -webkit-linear-gradient(120deg, @brand-primary, @brand-secondary);
+    background-image: -moz-linear-gradient(120deg, @brand-primary, @brand-secondary);
+    background-image: -o-linear-gradient(120deg, @brand-primary, @brand-secondary);
+    background-image: linear-gradient(120deg, @brand-primary, @brand-secondary);
+    border: none;
+    box-shadow: 0 2px 4px -2px @brand-primary;
+}
+
+.navbar-default .navbar-nav>li>a {
+    color: @brand-quaternary;
+    &:hover, &:focus {
+        color: @brand-tertiary;
+    }
+}
+
+// navbar /// search bar
+
+#productsearch {
+    background-color: transparent;
+    border-color: @brand-quaternary;
+}
+
+.c-input-group-addon {
+    background-color: transparent;
+    border: 1px solid @brand-quaternary;
+    border-right: 0;
+    border-radius: 4px 0 0 4px;
+    padding: 6px 12px;
+    font-size: 14px;
+    font-weight: normal;
+    color: @brand-quaternary;
+    text-align: center;
+    &:hover {
+        background-color: @brand-secondary;
+        transition: background-color .2s ease-in-out;
+    }
+}
+
+.form-control {
+    color: @gray-dark;
+    &:focus {
+        box-shadow: inset 0 1px 1px fade(@brand-quaternary, 50%), 0 1px 1px fade(@brand-quaternary, 25%),
+    }
+}
+
+// navbar /// right
+
+.dropdown-menu,
+.c-typeahead__results--empty,
+.c-typeahead__results--loading {
+    border: none;
+    background-color: @brand-quaternary;
+    color: @brand-secondary;
+}
+
+// jumbotron
+
+.jumbotron {
+    padding-top: 0;
+    background-color: transparent;
+}
+
+.carousel-caption {
+    bottom: 0;
+    @media (min-width: @screen-md) {
+        bottom: 40%;
+    }
+}
+
+// Homepage Carousel
+
+.home--carousel {
+  margin-top: -@navbar-margin-bottom;
+  h1, .h1 {
+    text-transform: uppercase;
+  }
+}

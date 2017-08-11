@@ -42,7 +42,7 @@
     </ul>
 </nav> 
 <header>
-    <nav class="navbar navbar-default navbar-fixed-top navbar-flex">
+    <nav class="c-navbar-default navbar navbar-default navbar-fixed-top navbar-flex">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="offcanvas" data-target=".navmenu" data-canvas="body">
@@ -50,10 +50,12 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                 <a class="navbar-brand" ui-sref="home" ng-if="!application.logoUrl">{{application.name}}</a>
+                <a class="navbar-brand" ui-sref="home" ng-if="!application.logoUrl">
+                    <img src="/assets/images/sotasubs-badge.svg">
+                </a>
                 <a class="c-logo-display c-logo-display__nav" ng-if="application.logoUrl" ui-sref="home">
-                    <img ng-src="{{application.logoUrl}}" alt="{{application.name}}">
-                </a> 
+                    <img ng-src="{{application.logoUrl}}" alt="{{application.name()}}">
+                </a>
             </div>
             <ul class="nav navbar-nav navbar-nav--desktop">
                 <li>
@@ -100,10 +102,10 @@
                     <a href="" ng-click="base.mobileSearch()"><i class="fa fa-search"></i></a>
                 </li>
                 <li>
-                    <a ui-sref="cart" ui-sref-opts="{reload: true}"><i class="fa fa-shopping-cart c-topnav__cart-icon"></i> <span class="sr-only">Shopping Cart</span> <span class="badge c-topnav__cart-count" ng-bind="base.currentOrder.LineItemCount"></span></a>
+                    <a ui-sref="cart"><i class="fa fa-shopping-cart"></i> <span class="sr-only">Shopping Cart</span> <span class="badge" ng-bind="base.totalQuantity"></span></a>
                 </li>
             </ul>
         </div>
     </nav>
 </header>
-<main ui-view class="container" cg-busy="application.stateLoading('base')"></main>
+<main ui-view ng-class="application.$state.includes('home') ? '' : 'container'" cg-busy="application.stateLoading('base')"></main>
