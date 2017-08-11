@@ -16,6 +16,7 @@ angular.module('orderCloud', [
         'slick',
         'ngCookies',
         'ordercloud-angular-sdk',
-        'ngResource'
+        'ngResource',
+        'textAngular'
     ]
 );
