@@ -46,7 +46,7 @@ function HomeController(FeaturedProducts, FeaturedCategories, ocAppName) {
 
 	vm.carousel = {
 		Settings: {
-			Interval: 5000,
+			Interval: 9000,
 			Active: 0,
 			NoWrap: false
 		},
@@ -59,14 +59,14 @@ function HomeController(FeaturedProducts, FeaturedCategories, ocAppName) {
 			},
 			{
 				URL: '/assets/images/carousel_2_1920x900.jpg',
-				Title: 'Carousel Image Two',
-				SubText: 'This is the second image',
+				Title: 'Save $10 on your first order!',
+				SubText: 'First time customers use 10OFF at checkout',
 				ID: 1
 			},
 			{
 				URL: '/assets/images/carousel_3_1920x900.jpg',
-				Title: 'Carousel Image Three',
-				SubText: 'This is the third image',
+				Title: 'Minnesota Sourced',
+				SubText: 'Browse by products or categories online',
 				ID: 2
 			}
 		]

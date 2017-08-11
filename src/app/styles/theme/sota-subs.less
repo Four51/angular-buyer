@@ -1,26 +1,30 @@
-@brand-primary: #FF5F32;
-// @brand-secondary: #FF8A69;
-// @brand-tertiary: #FFD3C7;
-// @brand-quaternary: #A33D20;
-@brand-secondary: lighten(@brand-primary, 15%);
-@brand-tertiary: lighten(@brand-primary, 30%);
-@brand-quaternary: lighten(@brand-primary, 45%);
-@brand-success: #91A6FF;
-@brand-info: #5DD2D8;
-@brand-warning: #FFB47F;
-@brand-danger: #FF7F8A;
+@brand-primary:                 #FF5F32;
+@brand-secondary:               lighten(@brand-primary, 15%);
+@brand-tertiary:                lighten(@brand-primary, 30%);
+@brand-quaternary:              lighten(@brand-primary, 45%);
+@brand-success:                 #91A6FF;
+@brand-info:                    #5DD2D8;
+@brand-warning:                 #FFB47F;
+@brand-danger:                  #FF7F8A;
+
+//** Placeholder text color
+@input-color-placeholder:        @brand-tertiary;
 
 // navbar
+
+@navbar-height: 78px;
 
 .navbar-brand {
     padding: 0 @navbar-padding-horizontal;
     img {
         width: 2.5em;
+        padding-top: 16px;
+        padding-bottom: 16px;
     }
 }
 
 .c-navbar-default {
-    padding: 1em;
+    // padding: 1em;
     background-image: -webkit-linear-gradient(120deg, @brand-primary, @brand-secondary);
     background-image: -moz-linear-gradient(120deg, @brand-primary, @brand-secondary);
     background-image: -o-linear-gradient(120deg, @brand-primary, @brand-secondary);
@@ -80,6 +84,7 @@
 
 .jumbotron {
     padding-top: 0;
+    background-color: transparent;
 }
 
 .carousel-caption {
@@ -87,4 +92,13 @@
     @media (min-width: @screen-md) {
         bottom: 40%;
     }
+}
+
+// Homepage Carousel
+
+.home--carousel {
+  margin-top: -@navbar-margin-bottom;
+  h1, .h1 {
+    text-transform: uppercase;
+  }
 }
