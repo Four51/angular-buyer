@@ -52,19 +52,19 @@ function HomeController(FeaturedProducts, FeaturedCategories, ocAppName) {
 		},
 		Slides: [
 			{
-				URL: 'assets/images/carousel1.jpg', 
+				URL: '/assets/images/carousel_1_1920x900.jpg', 
 				Title: ocAppName.Watch(),
 				SubText: 'Welcome to the ' + ocAppName.Watch() + ' application',
 				ID: 0
 			},
 			{
-				URL: 'assets/images/carousel2.jpg',
+				URL: '/assets/images/carousel_2_1920x900.jpg',
 				Title: 'Carousel Image Two',
 				SubText: 'This is the second image',
 				ID: 1
 			},
 			{
-				URL: 'assets/images/carousel3.jpg',
+				URL: '/assets/images/carousel_3_1920x900.jpg',
 				Title: 'Carousel Image Three',
 				SubText: 'This is the third image',
 				ID: 2
