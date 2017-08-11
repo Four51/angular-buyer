@@ -5,15 +5,14 @@ var gulp = require('gulp'),
     autoprefixer = require('gulp-autoprefixer'),
     lessImport = require('gulp-less-import'),
     sourcemaps = require('gulp-sourcemaps'),
-    filter = require('gulp-filter'),
     concatCss = require('gulp-concat-css'),
     mainBowerFiles = require('main-bower-files');
 
 gulp.task('clean:styles', function() {
-    return del(config.build + '**/*.css');
+    return del([config.build + '**/*.css', config.compile + '**/*.css']);
 });
 
-gulp.task('styles', ['clean:styles'], StylesFunction);
+gulp.task('styles', ['clean:styles'], config.saas.styles ? config.saas.styles.libLess : StylesFunction);
 
 function StylesFunction() {
     var browserSync = require('browser-sync').get('oc-server');
@@ -22,17 +21,15 @@ function StylesFunction() {
             mainBowerFiles({
                 filter: '**/*.less',
                 overrides: {
-                    'slick-carousel': {
-                        main: [
-                            "slick/slick.js",
-                            "slick/slick.less",
-                            "slick/slick-theme.less"
-                        ]
-                    },
                     'jasny-bootstrap': {
                         main: [
-                            "./dist/js/jasny-bootstrap.js",
-                            "./less/jasny-bootstrap.less"
+                            './less/jasny-bootstrap.less'
+                        ]
+                    },
+                    'slick-carousel': {
+                        main: [
+                            'slick/slick.less',
+                            'slick/slick-theme.less'
                         ]
                     },
                     'bootswatch': config.checkBootswatchTheme()
