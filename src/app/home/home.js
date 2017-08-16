@@ -52,19 +52,19 @@ function HomeController(FeaturedProducts, FeaturedCategories, ocAppName) {
 		},
 		Slides: [
 			{
-				URL: '/assets/images/carousel_burrito_1920x900.jpg', 
+				URL: '/assets/images/carousel_storefront.jpg', 
 				Title: ocAppName.Watch(),
 				SubText: 'Welcome to the ' + ocAppName.Watch() + ' application',
 				ID: 0
 			},
 			{
-				URL: '/assets/images/carousel_chips-guac_1920x900.jpg',
+				URL: '/assets/images/carousel_tacos-beer.jpg',
 				Title: 'Save $10 on your first order!',
 				SubText: 'First time customers use 10OFF at checkout',
 				ID: 1
 			},
 			{
-				URL: '/assets/images/carousel_burrito-bowl_1920x900.jpg',
+				URL: '/assets/images/carousel_avocados.jpg',
 				Title: 'Minnesota Sourced',
 				SubText: 'Browse by products or categories online',
 				ID: 2
